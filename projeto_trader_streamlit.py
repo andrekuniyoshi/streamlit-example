@@ -7,8 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1uCBNV1TvB287HBjhQpmJbb9vCm9WhHFO
 """
 
-pip install yfinance
-
 ''' projeto do grupo MErcado Financeiro no Streamlit'''
 
 import pandas as pd
