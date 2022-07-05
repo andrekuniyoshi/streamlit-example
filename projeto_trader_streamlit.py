@@ -24,7 +24,7 @@ ticker = st.sidebar.selectbox(
 
 stock = yf.Ticker(ticker)
 
-df = yf.download(ticker = ticker,
+df = yf.download(tickers = ticker,
                  start = '2021-01-01',
                  end = '2022-04-19',
                  interval = '1h',
