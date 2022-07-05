@@ -24,9 +24,10 @@ ticker = st.sidebar.selectbox(
 
 stock = yf.Ticker(ticker)
 
-start = '2021-01-01',
-end = '2022-04-19',
-interval = '1h',
+df = yf.download(ticker = ticker,
+                 start = '2021-01-01',
+                 end = '2022-04-19',
+                 interval = '1h',
+                 ajusted = True)
 
-df = yf.download(ticker, start, end, ajusted = True)
 st.dataframe(df)
