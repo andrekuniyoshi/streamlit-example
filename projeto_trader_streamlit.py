@@ -139,6 +139,18 @@ def constroi_features_defasadas(df,lista_features,defasagem_maxima):
     df_cop.dropna(inplace=True)
     return df_cop
 
+def constroi_features_futuras(df,feature,defasagem):
+    # Constrói features defasadas com base na base original
+    # Copia a base
+    df_cop = df.copy()
+
+    df_cop[str(feature)+'_fut_'+str(defasagem)] = df_cop[feature].shift(-defasagem)
+    df_cop['target_fut_'+str(defasagem)] = df_cop[str(feature)+'_fut_'+str(defasagem)].diff().apply(lambda x: 0 if x<=0 else 1)
+    df_cop.dropna(inplace=True)
+
+    
+    return df_cop
+
 df = criar_rsi(df)
 df = criar_bollinger(df)
 df = suporte_resistencia(df)
@@ -148,5 +160,7 @@ df = target(df)
 df.dropna(inplace=True)
 df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class']]
 df = constroi_features_defasadas(df,['Adj Close'],20)
+df = constroi_features_futuras(df,'target',1)
+df.drop('target', axis=1, inplace=True)
 
 st.dataframe(df)
