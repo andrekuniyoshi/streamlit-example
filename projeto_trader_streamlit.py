@@ -153,12 +153,37 @@ df = criar_rsi(df)
 df = criar_bollinger(df)
 df = suporte_resistencia(df)
 df = lta_ltb(df)
-df = target(df)
 
+# ---------------- visualização dos dados ---------------------------------#
+
+figBoll = go.Figure()
+figBoll.add_trace(
+    go.Scatter(
+        x = df.index(),
+        y = df['upper'],
+        name = "Upper Band")
+)
+figBoll.add_trace(
+    go.Scatter(
+        x = df.index(),
+        y = df['mid'],
+        name = "Média Móvel")
+)
+figBoll.add_trace(
+    go.Scatter(
+        x = df.index(),
+        y = df['low'],
+        name = "Lower Band")
+)
+
+
+# ----------------- Criando dataset para modelos ---------------------------#
+df = target(df)
 df.dropna(inplace=True)
 df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class']]
 df = constroi_features_defasadas(df,['Adj Close'],20)
 df = constroi_features_futuras(df,'target',1)
 df.drop('target', axis=1, inplace=True)
+
 
 st.dataframe(df)
