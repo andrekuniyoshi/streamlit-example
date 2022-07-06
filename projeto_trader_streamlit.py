@@ -28,7 +28,7 @@ stock = yf.Ticker(ticker)
 
 df = yf.download(tickers = ticker,
                  start = '2021-01-01',
-                 end = '2022-04-19',
+                 end = dt.datetime.today(),
                  interval = '1h',
                  ajusted = True)
 
