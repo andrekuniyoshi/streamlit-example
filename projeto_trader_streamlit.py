@@ -10,6 +10,7 @@ Original file is located at
 ''' projeto do grupo MErcado Financeiro no Streamlit'''
 
 import pandas as pd
+import numpy as np
 import yfinance as yf
 import streamlit as st
 import datetime as dt
