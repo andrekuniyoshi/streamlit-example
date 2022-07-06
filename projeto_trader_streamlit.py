@@ -175,7 +175,16 @@ figBoll.add_trace(
         y = df['low'],
         name = "Lower Band")
 )
-
+figBoll.update_layout(legend=dict(
+    orientation="h",
+    yanchor="bottom",
+    y=1,
+    xanchor="left",
+    x=0
+    ))
+    
+figBoll.update_yaxes(tickprefix="$")
+st.plotly_chart(figBoll, use_container_width=True)
 
 # ----------------- Criando dataset para modelos ---------------------------#
 df = target(df)
