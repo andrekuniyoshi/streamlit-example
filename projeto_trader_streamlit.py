@@ -159,19 +159,19 @@ df = lta_ltb(df)
 figBoll = go.Figure()
 figBoll.add_trace(
     go.Scatter(
-        x = df.index(),
+        x = df.index,
         y = df['upper'],
         name = "Upper Band")
 )
 figBoll.add_trace(
     go.Scatter(
-        x = df.index(),
+        x = df.index,
         y = df['mid'],
         name = "Média Móvel")
 )
 figBoll.add_trace(
     go.Scatter(
-        x = df.index(),
+        x = df.index,
         y = df['low'],
         name = "Lower Band")
 )
