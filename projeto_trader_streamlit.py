@@ -35,9 +35,20 @@ df = yf.download(tickers = ticker,
                  ajusted = True)
 
 def criar_rsi(df):
-  RSI_PERIOD = 20 # definindo o período considerado para cálculo de RSI
-  df['rsi'] = talib.RSI(df['Adj Close'], RSI_PERIOD)  # criando a feature RSI
-  return df
+    n = 20
+    def rma(x, n, y0):
+        a = (n-1) / n
+        ak = a**np.arange(len(x)-1, -1, -1)
+        return np.r_[np.full(n, np.nan), y0, np.cumsum(ak * x) / ak / n + y0 * a**np.arange(1, len(x)+1)]
+
+    df['change'] = df['Adj Close'].diff()
+    df['gain'] = df.change.mask(df.change < 0, 0.0)
+    df['loss'] = -df.change.mask(df.change > 0, -0.0)
+    df['avg_gain'] = rma(df.gain[n+1:].to_numpy(), n, np.nansum(df.gain.to_numpy()[:n+1])/n)
+    df['avg_loss'] = rma(df.loss[n+1:].to_numpy(), n, np.nansum(df.loss.to_numpy()[:n+1])/n)
+    df['rs'] = df.avg_gain / df.avg_loss
+    df['rsi'] = 100 - (100 / (1 + df.rs))
+    return df
 
 df = criar_rsi(df)
 
