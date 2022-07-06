@@ -16,9 +16,6 @@ import datetime as dt
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-# indicadores traders
-import talib
-from talib import RSI, BBANDS
 
 symbols = ['AAPL', 'AMZN']
 
