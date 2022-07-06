@@ -16,6 +16,10 @@ import datetime as dt
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+# indicadores traders
+import talib
+from talib import RSI, BBANDS
+
 symbols = ['AAPL', 'AMZN']
 
 ticker = st.sidebar.selectbox(
@@ -29,5 +33,12 @@ df = yf.download(tickers = ticker,
                  end = '2022-04-19',
                  interval = '1h',
                  ajusted = True)
+
+def criar_rsi(df):
+  RSI_PERIOD = 20 # definindo o período considerado para cálculo de RSI
+  df['rsi'] = talib.RSI(df['Adj Close'], RSI_PERIOD)  # criando a feature RSI
+  return df
+
+df = criar_rsi(df)
 
 st.dataframe(df)
