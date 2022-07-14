@@ -32,6 +32,8 @@ df = yf.download(tickers = ticker,
                  interval = '1h',
                  ajusted = True)
 
+'''-----------------------------------FEATURE ENGINEERING-------------------------------------------- '''
+# CRIANDO FEATURE RSI
 def criar_rsi(df):
     n = 20
     def rma(x, n, y0):
@@ -48,6 +50,7 @@ def criar_rsi(df):
     df['rsi'] = 100 - (100 / (1 + df.rs))
     return df
 
+# CRIANDO FEATURE BOLLINGER BAND
 def criar_bollinger(df):
   # calculando a média móvel e limites superior e inferiror
   # limites com base em 2 desvios padrão
@@ -64,7 +67,7 @@ def criar_bollinger(df):
   df.dropna(inplace=True)
   return df
 
-# definindo a função de resistencia
+# RESISTÊNCIA
 def is_resistance(df,i):
   resistance = (df['High'][i] > df['High'][i-1]
                 and df['High'][i] > df['High'][i+1]
@@ -72,7 +75,7 @@ def is_resistance(df,i):
                 and df['High'][i-1] > df['High'][i-2])
   return resistance
 
-# definindo a função de suporte
+# SUPORTE
 def is_support(df,i):
   support = (df['Low'][i] < df['Low'][i-1]
              and df['Low'][i] < df['Low'][i+1]
@@ -96,6 +99,7 @@ def suporte_resistencia(df):
       df['suport_resistencia'][i] = 0 # definindo 0 para suporte
   return df
 
+# LTA E LTB
 def lta_ltb(df):
   df2 = df.reset_index()
   df['corr'] = (df2['Adj Close'].rolling(20).corr(pd.Series(df2.index))).tolist()
@@ -112,22 +116,38 @@ def lta_ltb(df):
 
   return df
 
+# MÉDIA MÓVEL
+def media_movel(df, coluna, defasagem):
+  df['media_movel'] = df[coluna].rolling(20).mean()
+  return df
+
+# FEATURES DE TEMPO
+def feat_temporais(df):
+  df['dia_semana'] = df.index.dayofweek
+  df['horario'] = df.index.hour
+  df['mes'] = df.index.month
+  return df
+
+# CRIANDO A TARGET
 def target(df):
 
-  # criando feature com 1h de defasagem (pegando a linha de cima)
+  # criando feature com 1h de defasagem (com hora anterior)
   df['def_1'] = df['Adj Close'].shift(1)
   # criando feature comparando valor atual com o defasado
   df['subt'] = df['Adj Close'] - df['def_1']
 
-  # criando a target de subida ou descida do valor da ação
-  #0 -> caiu (com relação ao anterior)
-  #1 -> subiu (com relação ao anterior)
-  #2 -> igual ao anterior
+  '''
+  criando a target de subida ou descida do valor da ação
+  0 -> caiu (com relação ao anterior)
+  1 -> subiu (com relação ao anterior)
+  2 -> igual ao anterior
+  '''
 
   df['target'] = df['subt'].apply(lambda x: 0 if x<0 else 1 if x>0 else 2)
 
   return df
 
+# FEATURES DEFASADAS 
 def constroi_features_defasadas(df,lista_features,defasagem_maxima):
     # Constrói features defasadas com base na base original
     # Copia a base
@@ -139,6 +159,7 @@ def constroi_features_defasadas(df,lista_features,defasagem_maxima):
     df_cop.dropna(inplace=True)
     return df_cop
 
+# FEATURES FUTURAS
 def constroi_features_futuras(df,feature,defasagem):
     # Constrói features defasadas com base na base original
     # Copia a base
@@ -153,8 +174,10 @@ df = criar_rsi(df)
 df = criar_bollinger(df)
 df = suporte_resistencia(df)
 df = lta_ltb(df)
+df = media_movel(df, 'Adj Close', 20)
+df = feat_temporais(df)
 
-# ---------------- visualização dos dados ---------------------------------#
+'''-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
 
 figBoll = go.Figure()
 figBoll.add_trace(
@@ -186,10 +209,10 @@ figBoll.update_layout(legend=dict(
 figBoll.update_yaxes(tickprefix="$")
 st.plotly_chart(figBoll, use_container_width=True)
 
-# ----------------- Criando dataset para modelos ---------------------------#
+'''-----------------------------------CRIANDO DATASET-------------------------------------------- '''
 df = target(df)
 df.dropna(inplace=True)
-df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class']]
+df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
 df = constroi_features_defasadas(df,['Adj Close'],20)
 df = constroi_features_futuras(df,'target',1)
 df.drop('target', axis=1, inplace=True)
