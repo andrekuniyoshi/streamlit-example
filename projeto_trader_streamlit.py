@@ -219,3 +219,27 @@ df.drop('target', axis=1, inplace=True)
 
 
 st.dataframe(df)
+
+'''-----------------------------------CRIANDO DATASET-------------------------------------------- '''
+
+def modelo(df, target):
+  X = df.drop(target, axis=1)
+  y = df[target]
+
+  X_train = X[:-1]
+  X_test = X[-1:]
+  y_train = y[:-1]
+
+  xgb = XGBClassifier(random_state=42,max_depth=5)
+  xgb.fit(X_train, y_train)
+  y_pred = xgb.predict(X_test)
+  y_proba = xgb.predict_proba(X_test)
+  y_proba = y_proba[:, 1]
+
+  # criando as colunas de resultados
+
+  return y_pred, y_proba
+
+y_pred, y_proba = modelo(df, 'target_ft_1)
+st.write(y_pred)
+st.write(y_proba)
