@@ -241,6 +241,6 @@ def modelo(df, target):
 
   return y_pred, y_proba
 
-y_pred, y_proba = modelo(df, 'target_ft_1)
+y_pred, y_proba = modelo(df, 'target_ft_1')
 st.write(y_pred)
 st.write(y_proba)
