@@ -17,7 +17,7 @@ import datetime as dt
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from xgboost import XGBClassifier
-
+import sklearn
 
 symbols = ['AAPL', 'AMZN']
 
