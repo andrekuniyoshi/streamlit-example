@@ -23,10 +23,8 @@ st.set_page_config(
     page_icon="📈",
 )
 
-with 2.5:
-    # st.image("logo.png", width=400)
-    st.title("💸 TERA - Projeto Mercado Financeiro")
-    st.header("")
+st.title("💸 TERA - Projeto Mercado Financeiro")
+st.header("")
 
 with st.expander("ℹ️ - About this app", expanded=True):
 	st.write(
