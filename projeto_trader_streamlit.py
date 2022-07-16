@@ -19,6 +19,28 @@ from plotly.subplots import make_subplots
 from xgboost import XGBClassifier
 import sklearn
 
+# -------------------------------------- Cabeçalho -------------------------------------------------------#
+
+st.set_page_config(
+    page_title="TERA - Projeto Mercado Financeiro",
+    page_icon="📈",
+)
+
+with st.expander("ℹ️ - About this app", expanded=True):
+
+    st.write(
+        """     
+-   Esse app é fruto do projeto final do curso de Data Science & Machile Learning da TERA
+-   Nosso app utiliza técnicas de Machine Learning para tentar prever se o valor das ações vai subir ou descer 
+-   Esse trabalho ainda está em desenvolvimento, então ressalta-se que não deve ser utilizado para subsidiar suas decisões de investimentos! Pelo menos, não por enquanto😁
+	    """
+    )
+
+    st.markdown("")
+
+# -------------------------------------------------------------------------------------------------------------------------------#
+
+
 symbols = ['AAPL', 'AMZN']
 
 ticker = st.sidebar.selectbox(
