@@ -23,15 +23,20 @@ st.set_page_config(
     page_icon="📈",
 )
 
-#with st.expander("ℹ️ - About this app", expanded=True):
-st.write(
+with c30:
+    # st.image("logo.png", width=400)
+    st.title("💸 TERA - Projeto Mercado Financeiro")
+    st.header("")
+
+with st.expander("ℹ️ - About this app", expanded=True):
+	st.write(
         """     
--   Esse app é fruto do projeto final do curso de Data Science & Machile Learning da TERA
--   Nosso app utiliza técnicas de Machine Learning para tentar prever se o valor das ações vai subir ou descer 
--   Esse trabalho ainda está em desenvolvimento, então ressalta-se que não deve ser utilizado para subsidiar suas decisões de investimentos! Pelo menos, não por enquanto😁
+	-   Esse app é fruto do projeto final do curso de Data Science & Machile Learning da TERA
+	-   Nosso app utiliza técnicas de Machine Learning para tentar prever se o valor das ações vai subir ou descer 
+	-   Esse trabalho ainda está em desenvolvimento, então ressalta-se que não deve ser utilizado para subsidiar suas decisões de investimentos! Pelo menos, não por enquanto😁
 	    """
-    )
-st.markdown("")
+	)
+	st.markdown("")
 
 # -------------------------------------------------------------------------------------------------------------------------------#
 
@@ -50,7 +55,7 @@ df = yf.download(tickers = ticker,
                  interval = '1h',
                  ajusted = True)
 
-'''-----------------------------------FEATURE ENGINEERING-------------------------------------------- '''
+#-----------------------------------FEATURE ENGINEERING--------------------------------------------
 # CRIANDO FEATURE RSI
 def criar_rsi(df):
     n = 20
@@ -195,7 +200,7 @@ df = lta_ltb(df)
 df = media_movel(df, 'Adj Close', 20)
 df = feat_temporais(df)
 
-'''-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
+##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
 
 figBoll = go.Figure()
 figBoll.add_trace(
@@ -227,7 +232,7 @@ figBoll.update_layout(legend=dict(
 figBoll.update_yaxes(tickprefix="$")
 st.plotly_chart(figBoll, use_container_width=True)
 
-'''-----------------------------------CRIANDO DATASET-------------------------------------------- '''
+##-----------------------------------CRIANDO DATASET-------------------------------------------- '''
 df = target(df)
 df.dropna(inplace=True)
 df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
@@ -238,7 +243,7 @@ df.drop('target', axis=1, inplace=True)
 
 st.dataframe(df)
 
-'''-----------------------------------CRIANDO DATASET-------------------------------------------- '''
+###-----------------------------------CRIANDO DATASET-------------------------------------------- '''
 
 def modelo(df, target):
   X = df.drop(target, axis=1)
