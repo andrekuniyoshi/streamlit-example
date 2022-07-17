@@ -194,7 +194,8 @@ def constroi_features_futuras(df,feature,defasagem):
 ###-----------------------------------FUNÇÃO DO MODELO-------------------------------------------- '''
 
 def modelo(df, target_):
-"""    df = criar_rsi(df)
+""" 
+    df = criar_rsi(df)
     df = criar_bollinger(df)
     df = suporte_resistencia(df)
     df = lta_ltb(df)
