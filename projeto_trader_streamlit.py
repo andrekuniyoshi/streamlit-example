@@ -199,10 +199,8 @@ def constroi_features_futuras(df,feature,defasagem):
 def modelo(df, target_):
     X_test = df.drop(target_, axis=1)[-1:]
 
-    X = df.dropna().drop(target_, axis=1)
-    y = df.dropna()[target_]
-    X_train = X[:-1]
-    y_train = y[:-1]
+    X_train = df[:-1].dropna().drop(target_, axis=1)
+    y_test = df[:-1].dropna()[target_]
 
     xgb = XGBClassifier(random_state=42,max_depth=5)
     xgb.fit(X_train, y_train)
