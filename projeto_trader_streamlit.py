@@ -207,24 +207,24 @@ df = media_movel(df, 'Adj Close', 20)
 df = feat_temporais(df)
 
 ##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
-
+df_viz = df[-600:]
 figBoll = go.Figure()
 figBoll.add_trace(
     go.Scatter(
-        x = df.index,
-        y = df['upper'],
+        x = df_viz.index,
+        y = df_viz['upper'],
         name = "Upper Band")
 )
 figBoll.add_trace(
     go.Scatter(
-        x = df.index,
-        y = df['mid'],
+        x = df_viz.index,
+        y = df_viz['mid'],
         name = "Média Móvel")
 )
 figBoll.add_trace(
     go.Scatter(
-        x = df.index,
-        y = df['low'],
+        x = df_viz.index,
+        y = df_viz['low'],
         name = "Lower Band")
 )
 figBoll.update_layout(legend=dict(
