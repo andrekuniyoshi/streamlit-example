@@ -250,7 +250,7 @@ figBoll.update_layout(legend=dict(
 	    xanchor="left",
 	    x=0
 	    ))
-
+figBoll.update_layout(title_text="Bollinger Band",title_font_color = '#264653',title_x=0,margin= dict(l=0,r=10,b=10,t=30), height=480)
 figBoll.update_yaxes(tickprefix="$")
 st.plotly_chart(figBoll, use_container_width=True)
 
