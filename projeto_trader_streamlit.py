@@ -53,9 +53,9 @@ with col2:
 				  step=1)
 
 with col3:
-	m1, m2 = st.columns((1,1))
-	m1.write(y_pred)
-	m2.write(y_proba)
+	#m1, m2 = st.columns((1,1))
+	st.write(y_pred)
+	#m2.write(y_proba)
 # -------------------------------------------------------------------------------------------------------------------------------#
 
 stock = yf.Ticker(ticker)
