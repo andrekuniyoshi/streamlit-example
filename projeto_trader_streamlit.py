@@ -200,7 +200,7 @@ def modelo(df, target_):
     X_test = df.drop(target_, axis=1)[-1:]
 
     X_train = df[:-1].dropna().drop(target_, axis=1)
-    y_test = df[:-1].dropna()[target_]
+    y_train = df[:-1].dropna()[target_]
 
     xgb = XGBClassifier(random_state=42,max_depth=5)
     xgb.fit(X_train, y_train)
