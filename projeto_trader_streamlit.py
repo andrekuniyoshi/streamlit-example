@@ -278,7 +278,7 @@ def modelo(df, target, def_fut):
 
   # criando as colunas de resultados
 
-  return y_pred, y_proba
+  	return y_pred, y_proba
 
 
 with col2:
