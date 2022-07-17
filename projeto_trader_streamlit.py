@@ -15,6 +15,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from xgboost import XGBClassifier
 import sklearn
+import altair
 
 # -------------------------------------- Cabeçalho -------------------------------------------------------#
 
@@ -221,6 +222,10 @@ df = feat_temporais(df)
 
 ##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
 df_viz = df[-600:]
+
+c = alt.Chart(df_viz[['upper','mid','low']]).mark_line(point=True).encode(color='symbol')
+
+st.altair_chart(c, use_container_width=True)
 
 chart_data = df[-600:][['upper','mid','low']]
 st.line_chart(chart_data)
