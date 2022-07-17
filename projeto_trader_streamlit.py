@@ -191,6 +191,37 @@ def constroi_features_futuras(df,feature,defasagem):
     df_cop[str(feature)+'_fut'] = df_cop[feature].shift(-defasagem)
     return df_cop
 
+###-----------------------------------FUNÇÃO DO MODELO-------------------------------------------- '''
+
+def modelo(df, target, def_fut):
+	df = criar_rsi(df)
+	df = criar_bollinger(df)
+	df = suporte_resistencia(df)
+	df = lta_ltb(df)
+	df = media_movel(df, 'Adj Close', 20)
+	df = feat_temporais(df)
+	
+	df = target(df)
+	df.dropna(inplace=True)
+	df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
+	df = constroi_features_defasadas(df,['Adj Close'],20)
+	df = constroi_features_futuras(df,'target',def_fut)
+	df.drop('target', axis=1, inplace=True)
+
+	X = df.drop(target, axis=1)
+	y = df[target]
+
+	X_train = X[:-1]
+	X_test = X[-1:]
+	y_train = y[:-1]
+
+	xgb = XGBClassifier(random_state=42,max_depth=5)
+	xgb.fit(X_train, y_train)
+	y_pred = xgb.predict(X_test)
+	y_proba = xgb.predict_proba(X_test)
+	y_proba = y_proba[:, 1]
+  	return y_pred, y_proba
+
 df = criar_rsi(df)
 df = criar_bollinger(df)
 df = suporte_resistencia(df)
@@ -244,41 +275,6 @@ df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'c
 df = constroi_features_defasadas(df,['Adj Close'],20)
 df = constroi_features_futuras(df,'target',1)
 df.drop('target', axis=1, inplace=True)
-
-
-###-----------------------------------FUNÇÃO DO MODELO-------------------------------------------- '''
-
-def modelo(df, target, def_fut):
-	df = criar_rsi(df)
-	df = criar_bollinger(df)
-	df = suporte_resistencia(df)
-	df = lta_ltb(df)
-	df = media_movel(df, 'Adj Close', 20)
-	df = feat_temporais(df)
-	
-	df = target(df)
-	df.dropna(inplace=True)
-	df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
-	df = constroi_features_defasadas(df,['Adj Close'],20)
-	df = constroi_features_futuras(df,'target',def_fut)
-	df.drop('target', axis=1, inplace=True)
-
-	X = df.drop(target, axis=1)
-	y = df[target]
-
-	X_train = X[:-1]
-	X_test = X[-1:]
-	y_train = y[:-1]
-
-	xgb = XGBClassifier(random_state=42,max_depth=5)
-	xgb.fit(X_train, y_train)
-	y_pred = xgb.predict(X_test)
-	y_proba = xgb.predict_proba(X_test)
-	y_proba = y_proba[:, 1]
-
-  # criando as colunas de resultados
-
-  	return y_pred, y_proba
 
 
 with col2:
