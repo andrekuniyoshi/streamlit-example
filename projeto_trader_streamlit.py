@@ -188,9 +188,7 @@ def constroi_features_futuras(df,feature,defasagem):
     # Copia a base
     df_cop = df.copy()
 
-    df_cop[str(feature)+'_fut_'+str(defasagem)] = df_cop[feature].shift(-defasagem)
-    #df_cop['target_fut_'+str(defasagem)] = df_cop[str(feature)+'_fut_'+str(defasagem)].diff().apply(lambda x: 0 if x<=0 else 1)
-    #df_cop.dropna(inplace=True)
+    df_cop[str(feature)+'_fut'] = df_cop[feature].shift(-defasagem)
     return df_cop
 
 df = criar_rsi(df)
@@ -248,31 +246,40 @@ df = constroi_features_futuras(df,'target',1)
 df.drop('target', axis=1, inplace=True)
 
 
-###-----------------------------------CRIANDO DATASET-------------------------------------------- '''
+###-----------------------------------FUNÇÃO DO MODELO-------------------------------------------- '''
 
-def modelo(df, target):
-  X = df.drop(target, axis=1)
-  y = df[target]
+def modelo(df, target, def_fut):
+	df = criar_rsi(df)
+	df = criar_bollinger(df)
+	df = suporte_resistencia(df)
+	df = lta_ltb(df)
+	df = media_movel(df, 'Adj Close', 20)
+	df = feat_temporais(df)
+	
+	df = target(df)
+	df.dropna(inplace=True)
+	df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
+	df = constroi_features_defasadas(df,['Adj Close'],20)
+	df = constroi_features_futuras(df,'target',def_fut)
+	df.drop('target', axis=1, inplace=True)
 
-  X_train = X[:-1]
-  X_test = X[-1:]
-  y_train = y[:-1]
+	X = df.drop(target, axis=1)
+	y = df[target]
 
-  xgb = XGBClassifier(random_state=42,max_depth=5)
-  xgb.fit(X_train, y_train)
-  y_pred = xgb.predict(X_test)
-  y_proba = xgb.predict_proba(X_test)
-  y_proba = y_proba[:, 1]
+	X_train = X[:-1]
+	X_test = X[-1:]
+	y_train = y[:-1]
+
+	xgb = XGBClassifier(random_state=42,max_depth=5)
+	xgb.fit(X_train, y_train)
+	y_pred = xgb.predict(X_test)
+	y_proba = xgb.predict_proba(X_test)
+	y_proba = y_proba[:, 1]
 
   # criando as colunas de resultados
 
   return y_pred, y_proba
 
-###-----------------------------------MODELO--------------------------------------------
-
-y_pred, y_proba = modelo(df[-600:], 'target_fut_1')
-
-###-------------------------------------------------------------------------------------
 
 with col2:
 	hora_previsao = st.slider("Tempo Futuro da Previsão (horas)",
@@ -281,7 +288,13 @@ with col2:
 				  max_value=8,
 				  step=1)
 
+###-----------------------------------MODELO--------------------------------------------
+
+y_pred, y_proba = modelo(df[-600:], 'target_fut', hora_previsao)
+
+###-------------------------------------------------------------------------------------
+
 with col3:
 	#m1, m2 = st.columns((1,1))
 	st.write(y_pred)
-	#m2.write(y_proba)
+	st.write(y_proba)
