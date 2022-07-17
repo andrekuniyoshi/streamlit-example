@@ -220,30 +220,28 @@ df = feat_temporais(df)
 ##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
 df_viz = df[-600:]
 
-col_1, col_2 = st.columns(2)
 
-with col_1:
-	st.subheader('Bollinger Band')
-	figBoll = go.Figure()
-	figBoll.add_trace(
+st.subheader('Bollinger Band')
+figBoll = go.Figure()
+figBoll.add_trace(
 	    go.Scatter(
 		x = df_viz.index,
 		y = df_viz['upper'],
 		name = "Upper Band")
 	)
-	figBoll.add_trace(
+figBoll.add_trace(
 	    go.Scatter(
 		x = df_viz.index,
 		y = df_viz['mid'],
 		name = "Média Móvel")
 	)
-	figBoll.add_trace(
+figBoll.add_trace(
 	    go.Scatter(
 		x = df_viz.index,
 		y = df_viz['low'],
 		name = "Lower Band")
 	)
-	figBoll.update_layout(legend=dict(
+figBoll.update_layout(legend=dict(
 	    orientation="h",
 	    yanchor="bottom",
 	    y=1,
@@ -251,8 +249,8 @@ with col_1:
 	    x=0
 	    ))
 
-	figBoll.update_yaxes(tickprefix="$")
-	st.plotly_chart(figBoll, use_container_width=True)
+figBoll.update_yaxes(tickprefix="$")
+st.plotly_chart(figBoll, use_container_width=True)
 
 
 ##-----------------------------------slider de horas-------------------------------------------- '''
