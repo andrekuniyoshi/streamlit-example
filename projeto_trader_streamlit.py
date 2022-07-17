@@ -13,6 +13,7 @@ import streamlit as st
 import datetime as dt
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import plotly.express as px
 from xgboost import XGBClassifier
 import sklearn
 import altair
@@ -224,6 +225,7 @@ df = feat_temporais(df)
 df_viz = df[-600:]
 st.markdown("")
 
+# Bollinger Band
 st.subheader('Visualização das features exógenas')
 figBoll = go.Figure()
 figBoll.add_trace(
@@ -255,6 +257,9 @@ figBoll.update_layout(title_text="Bollinger Band")
 figBoll.update_yaxes(tickprefix="$")
 st.plotly_chart(figBoll, use_container_width=False)
 
+# Gráfico RSI
+fig = px.line(df_viz, x=df_viz.index, y="rsi")
+fig.update_layout(title_text="Variação de RSI")
 
 ##-----------------------------------slider de horas-------------------------------------------- '''
 
