@@ -279,4 +279,4 @@ def modelo(df, target):
 
   return y_pred, y_proba
 
-y_pred, y_proba = modelo(df[-600:, 'target_fut_1')
+y_pred, y_proba = modelo(df[-600:], 'target_fut_1')
