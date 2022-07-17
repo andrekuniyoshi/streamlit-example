@@ -45,17 +45,6 @@ with col1:
 	ticker = st.selectbox('Escolha uma ação',
 				      symbols)
 
-with col2:
-	hora_previsao = st.slider("Tempo Futuro da Previsão (horas)",
-				  value=1,
-				  min_value=1,
-				  max_value=8,
-				  step=1)
-
-with col3:
-	#m1, m2 = st.columns((1,1))
-	st.write(y_pred)
-	#m2.write(y_proba)
 # -------------------------------------------------------------------------------------------------------------------------------#
 
 stock = yf.Ticker(ticker)
@@ -211,6 +200,52 @@ df = lta_ltb(df)
 df = media_movel(df, 'Adj Close', 20)
 df = feat_temporais(df)
 
+##-----------------------------------CRIANDO DATASET-------------------------------------------- '''
+df = target(df)
+df.dropna(inplace=True)
+df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
+df = constroi_features_defasadas(df,['Adj Close'],20)
+df = constroi_features_futuras(df,'target',1)
+df.drop('target', axis=1, inplace=True)
+
+
+###-----------------------------------CRIANDO DATASET-------------------------------------------- '''
+
+def modelo(df, target):
+  X = df.drop(target, axis=1)
+  y = df[target]
+
+  X_train = X[:-1]
+  X_test = X[-1:]
+  y_train = y[:-1]
+
+  xgb = XGBClassifier(random_state=42,max_depth=5)
+  xgb.fit(X_train, y_train)
+  y_pred = xgb.predict(X_test)
+  y_proba = xgb.predict_proba(X_test)
+  y_proba = y_proba[:, 1]
+
+  # criando as colunas de resultados
+
+  return y_pred, y_proba
+
+###-----------------------------------MODELO--------------------------------------------
+
+y_pred, y_proba = modelo(df[-600:], 'target_fut_1')
+
+###-------------------------------------------------------------------------------------
+
+with col2:
+	hora_previsao = st.slider("Tempo Futuro da Previsão (horas)",
+				  value=1,
+				  min_value=1,
+				  max_value=8,
+				  step=1)
+
+with col3:
+	#m1, m2 = st.columns((1,1))
+	st.write(y_pred)
+	#m2.write(y_proba)
 ##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
 df_viz = df[-600:]
 
@@ -248,35 +283,4 @@ with col_1:
 	figBoll.update_yaxes(tickprefix="$")
 	st.plotly_chart(figBoll, use_container_width=True)
 
-##-----------------------------------CRIANDO DATASET-------------------------------------------- '''
-df = target(df)
-df.dropna(inplace=True)
-df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
-df = constroi_features_defasadas(df,['Adj Close'],20)
-df = constroi_features_futuras(df,'target',1)
-df.drop('target', axis=1, inplace=True)
-
-
 st.dataframe(df)
-
-###-----------------------------------CRIANDO DATASET-------------------------------------------- '''
-
-def modelo(df, target):
-  X = df.drop(target, axis=1)
-  y = df[target]
-
-  X_train = X[:-1]
-  X_test = X[-1:]
-  y_train = y[:-1]
-
-  xgb = XGBClassifier(random_state=42,max_depth=5)
-  xgb.fit(X_train, y_train)
-  y_pred = xgb.predict(X_test)
-  y_proba = xgb.predict_proba(X_test)
-  y_proba = y_proba[:, 1]
-
-  # criando as colunas de resultados
-
-  return y_pred, y_proba
-
-y_pred, y_proba = modelo(df[-600:], 'target_fut_1')
