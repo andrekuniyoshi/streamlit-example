@@ -40,19 +40,18 @@ with st.expander("ℹ️ - About this app", expanded=True):
 # ---------------------------------------------Escolhendo o tempo futuro da previsão-----------------------------------------------------#
 col1, col2, col3 = st.columns(3)
 with col1:
+	symbols = ['AAPL', 'AMZN']
+
+	ticker = st.selectbox('Escolha uma ação',
+				      symbols)
+
+with col2:
 	hora_previsao = st.slider("Tempo Futuro da Previsão (horas)",
 				  value=1,
 				  min_value=1,
 				  max_value=8,
 				  step=1)
 # -------------------------------------------------------------------------------------------------------------------------------#
-
-
-symbols = ['AAPL', 'AMZN']
-
-ticker = st.sidebar.selectbox(
-    'Escolha uma ação',
-     symbols)
 
 stock = yf.Ticker(ticker)
 
