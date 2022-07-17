@@ -289,7 +289,7 @@ df.drop('target', axis=1, inplace=True)
 
 ###-----------------------------------MODELO--------------------------------------------
 df = df[-600:]
-y_pred, y_proba = modelo(df, 'target_fut', hora_previsao)
+y_pred, y_proba = modelo(df, 'target_fut')
 
 ###-------------------------------------------------------------------------------------
 
