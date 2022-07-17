@@ -283,7 +283,7 @@ with col2:
 				  min_value=1,
 				  max_value=8,
 				  step=1)
-
+st.write(hora_previsao)
 ###-----------------------------------MODELO--------------------------------------------
 
 y_pred, y_proba = modelo(df[-600:], 'target_fut', hora_previsao)
