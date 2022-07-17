@@ -159,12 +159,12 @@ def target(df):
   # criando feature comparando valor atual com o defasado
   df['subt'] = df['Adj Close'] - df['def_1']
 
-  '''
+  """
   criando a target de subida ou descida do valor da ação
   0 -> caiu (com relação ao anterior)
   1 -> subiu (com relação ao anterior)
   2 -> igual ao anterior
-  '''
+  """
 
   df['target'] = df['subt'].apply(lambda x: 0 if x<0 else 1 if x>0 else 2)
 
@@ -199,6 +199,45 @@ df = suporte_resistencia(df)
 df = lta_ltb(df)
 df = media_movel(df, 'Adj Close', 20)
 df = feat_temporais(df)
+
+##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
+df_viz = df[-600:]
+
+col_1, col_2 = st.columns(2)
+
+with col_1:
+	st.subheader('Bollinger Band')
+	figBoll = go.Figure()
+	figBoll.add_trace(
+	    go.Scatter(
+		x = df_viz.index,
+		y = df_viz['upper'],
+		name = "Upper Band")
+	)
+	figBoll.add_trace(
+	    go.Scatter(
+		x = df_viz.index,
+		y = df_viz['mid'],
+		name = "Média Móvel")
+	)
+	figBoll.add_trace(
+	    go.Scatter(
+		x = df_viz.index,
+		y = df_viz['low'],
+		name = "Lower Band")
+	)
+	figBoll.update_layout(legend=dict(
+	    orientation="h",
+	    yanchor="bottom",
+	    y=1,
+	    xanchor="left",
+	    x=0
+	    ))
+
+	figBoll.update_yaxes(tickprefix="$")
+	st.plotly_chart(figBoll, use_container_width=True)
+
+st.dataframe(df)
 
 ##-----------------------------------CRIANDO DATASET-------------------------------------------- '''
 df = target(df)
@@ -246,41 +285,3 @@ with col3:
 	#m1, m2 = st.columns((1,1))
 	st.write(y_pred)
 	#m2.write(y_proba)
-##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
-df_viz = df[-600:]
-
-col_1, col_2 = st.columns(2)
-
-with col_1:
-	st.subheader('Bollinger Band')
-	figBoll = go.Figure()
-	figBoll.add_trace(
-	    go.Scatter(
-		x = df_viz.index,
-		y = df_viz['upper'],
-		name = "Upper Band")
-	)
-	figBoll.add_trace(
-	    go.Scatter(
-		x = df_viz.index,
-		y = df_viz['mid'],
-		name = "Média Móvel")
-	)
-	figBoll.add_trace(
-	    go.Scatter(
-		x = df_viz.index,
-		y = df_viz['low'],
-		name = "Lower Band")
-	)
-	figBoll.update_layout(legend=dict(
-	    orientation="h",
-	    yanchor="bottom",
-	    y=1,
-	    xanchor="left",
-	    x=0
-	    ))
-
-	figBoll.update_yaxes(tickprefix="$")
-	st.plotly_chart(figBoll, use_container_width=True)
-
-st.dataframe(df)
