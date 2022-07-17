@@ -166,7 +166,7 @@ def target(df):
 #  2 -> igual ao anterior
   
 
-  df['target'] = df['subt'].apply(lambda x: 0 if x<0 else 1 if x>0 else 2)
+  df['target'] = df['subt'].apply(lambda x: int(0) if x<0 else int(1) if x>0 else int(2))
 
   return df
 
