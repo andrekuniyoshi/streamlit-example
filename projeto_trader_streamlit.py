@@ -38,7 +38,7 @@ with st.expander("ℹ️ - About this app", expanded=True):
 
 # -------------------------------------------------------------------------------------------------------------------------------#
 # ---------------------------------------------Escolhendo o tempo futuro da previsão-----------------------------------------------------#
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns([2,2,1,1])
 with col1:
 	symbols = ['AAPL', 'AMZN']
 
@@ -282,6 +282,7 @@ y_pred, y_proba = modelo(df, 'target_fut')
 ###-------------------------------------------------------------------------------------
 
 with col3:
-	m1, m2 = st.columns((1,1))
-	m1.st.write(y_pred[0])
-	m2.st.write(y_proba[0])
+	st.write(y_pred[0])
+	
+with col4:
+	st.write(y_proba[0])
