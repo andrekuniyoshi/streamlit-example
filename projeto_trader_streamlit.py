@@ -260,6 +260,7 @@ st.plotly_chart(figBoll, use_container_width=False)
 # Gráfico RSI
 fig = px.line(df_viz, x=df_viz.index, y="rsi")
 fig.update_layout(title_text="Variação de RSI")
+st.plotly_chart(fig, use_container_width=False)
 
 ##-----------------------------------slider de horas-------------------------------------------- '''
 
