@@ -283,6 +283,7 @@ y_pred, y_proba = modelo(df, 'target_fut')
 ###-------------------------------------------------------------------------------------
 
 with col3:
+	st.markdown("")
 	if y_proba >= 0.7:
 		st.info('Subir ⬆️')
 	elif y_proba <= 0.3:
