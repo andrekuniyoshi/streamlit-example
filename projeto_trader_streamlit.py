@@ -159,12 +159,12 @@ def target(df):
   # criando feature comparando valor atual com o defasado
   df['subt'] = df['Adj Close'] - df['def_1']
 
-  """
-  criando a target de subida ou descida do valor da ação
-  0 -> caiu (com relação ao anterior)
-  1 -> subiu (com relação ao anterior)
-  2 -> igual ao anterior
-  """
+
+#  criando a target de subida ou descida do valor da ação
+#  0 -> caiu (com relação ao anterior)
+#  1 -> subiu (com relação ao anterior)
+#  2 -> igual ao anterior
+  
 
   df['target'] = df['subt'].apply(lambda x: 0 if x<0 else 1 if x>0 else 2)
 
@@ -194,21 +194,21 @@ def constroi_features_futuras(df,feature,defasagem):
 ###-----------------------------------FUNÇÃO DO MODELO-------------------------------------------- '''
 
 def modelo(df, target_):
-""" 
-    df = criar_rsi(df)
-    df = criar_bollinger(df)
-    df = suporte_resistencia(df)
-    df = lta_ltb(df)
-    df = media_movel(df, 'Adj Close', 20)
-    df = feat_temporais(df)
+ 
+#    df = criar_rsi(df)
+#    df = criar_bollinger(df)
+#    df = suporte_resistencia(df)
+#    df = lta_ltb(df)
+#    df = media_movel(df, 'Adj Close', 20)
+#    df = feat_temporais(df)
 	
-    df = target(df)
-    df.dropna(inplace=True)
-    df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
-    df = constroi_features_defasadas(df,['Adj Close'],20)
-    df = constroi_features_futuras(df,'target',def_fut)
-    df.drop('target', axis=1, inplace=True)
-"""
+#    df = target(df)
+#    df.dropna(inplace=True)
+#    df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
+#    df = constroi_features_defasadas(df,['Adj Close'],20)
+#    df = constroi_features_futuras(df,'target',def_fut)
+#    df.drop('target', axis=1, inplace=True)
+
     X = df.drop(target_, axis=1)
     y = df[target_]
 
