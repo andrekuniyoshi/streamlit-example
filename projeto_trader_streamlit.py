@@ -276,11 +276,12 @@ st.dataframe(df)
 ###-----------------------------------MODELO--------------------------------------------
 df = df[-600:]
 y_pred, y_proba = modelo(df, 'target_fut')
-
+result = pd.DataFrame({'Previsão':y_pred[0],
+		      'Probabilidade': y_proba[0]})
 ###-------------------------------------------------------------------------------------
 
 with col3:
-	st.write(y_pred[0])
+	st.dataframe(df.style.hide_index())
 	
 with col4:
 	st.write(y_proba[0])
