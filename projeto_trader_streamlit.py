@@ -197,14 +197,12 @@ def constroi_features_futuras(df,feature,defasagem):
 ###-----------------------------------FUNÇÃO DO MODELO-------------------------------------------- '''
 
 def modelo(df, target_):
- 
+    X_test = df.drop(target_, axis=1)[-1:]
 
-    X = df.drop(target_, axis=1)
-    y = df[target_]
-
-    X_train = X[:-1].dropna()
-    X_test = X[-1:]
-    y_train = y[:-1].dropna()
+    X = df.dropna().drop(target_, axis=1)
+    y = df.dropna()[target_]
+    X_train = X[:-1]
+    y_train = y[:-1]
 
     xgb = XGBClassifier(random_state=42,max_depth=5)
     xgb.fit(X_train, y_train)
@@ -222,14 +220,6 @@ df = feat_temporais(df)
 
 ##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
 df_viz = df[-600:]
-
-c = alt.Chart(df_viz[['upper','mid','low']]).mark_line(point=True).encode(color='symbol')
-
-st.altair_chart(c, use_container_width=True)
-
-chart_data = df[-600:][['upper','mid','low']]
-st.line_chart(chart_data)
-
 
 st.subheader('Bollinger Band')
 figBoll = go.Figure()
