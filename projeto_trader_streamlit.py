@@ -283,8 +283,8 @@ y_pred, y_proba = modelo(df, 'target_fut')
 ###-------------------------------------------------------------------------------------
 
 with col3:
+	st.write("Previsão")
 	st.markdown("")
-	st.write("")
 	if y_proba >= 0.7:
 		st.info('Subir ⬆️')
 	elif y_proba <= 0.3:
@@ -292,6 +292,12 @@ with col3:
 	else:
 		st.warning('Na mesma 😐')
 with col4:
+	st.write("Probabilidade")
 	st.markdown("")
-	st.markdown("")
-	st.subheader(y_proba[0])
+	#st.subheader(y_proba[0])
+	if y_proba >= 0.7:
+		st.info(y_proba[0])
+	elif y_proba <= 0.3:
+		st.error(y_proba[0])
+	else:
+		st.warning(y_proba[0])
