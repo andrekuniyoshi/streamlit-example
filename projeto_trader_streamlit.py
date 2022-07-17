@@ -281,7 +281,7 @@ result = pd.DataFrame({'Previsão':y_pred[0].tolist(),
 ###-------------------------------------------------------------------------------------
 
 with col3:
-	st.dataframe(df.style.hide_index())
+	st.dataframe(result.style.hide_index())
 	
 with col4:
 	st.write(y_proba[0])
