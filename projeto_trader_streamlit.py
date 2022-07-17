@@ -38,6 +38,8 @@ with st.expander("ℹ️ - About this app", expanded=True):
 
 # -------------------------------------------------------------------------------------------------------------------------------#
 # ---------------------------------------------Escolhendo o tempo futuro da previsão-----------------------------------------------------#
+st.subheader('Previsão de Subida ou Descida')
+
 col1, col2, col3, col4 = st.columns([2,2,1,1])
 with col1:
 	symbols = ['AAPL', 'AMZN']
@@ -276,12 +278,11 @@ st.dataframe(df)
 ###-----------------------------------MODELO--------------------------------------------
 df = df[-600:]
 y_pred, y_proba = modelo(df, 'target_fut')
-result = pd.DataFrame({'Previsão':y_pred[0].tolist(),
-		      'Probabilidade': y_proba[0].tolist()})
+
 ###-------------------------------------------------------------------------------------
 
 with col3:
-	st.dataframe(result.style.hide_index())
+	st.subheader(y_pred[0])
 	
 with col4:
-	st.write(y_proba[0])
+	st.subheader(y_proba[0])
