@@ -276,8 +276,8 @@ st.dataframe(df)
 ###-----------------------------------MODELO--------------------------------------------
 df = df[-600:]
 y_pred, y_proba = modelo(df, 'target_fut')
-result = pd.DataFrame({'Previsão':y_pred[0],
-		      'Probabilidade': y_proba[0]})
+result = pd.DataFrame({'Previsão':y_pred[0].tolist(),
+		      'Probabilidade': y_proba[0].tolist()})
 ###-------------------------------------------------------------------------------------
 
 with col3:
