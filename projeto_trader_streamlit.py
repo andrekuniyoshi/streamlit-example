@@ -222,6 +222,10 @@ df = feat_temporais(df)
 ##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
 df_viz = df[-600:]
 
+chart_data = df[-600:][['upper','mid','low']]
+st.line_chart(chart_data)
+
+
 st.subheader('Bollinger Band')
 figBoll = go.Figure()
 figBoll.add_trace(
