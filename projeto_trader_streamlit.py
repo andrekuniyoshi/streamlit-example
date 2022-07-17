@@ -247,7 +247,7 @@ figBoll.update_layout(legend=dict(
 	    orientation="h",
 	    yanchor="bottom",
 	    y=1,
-	    xanchor="right",
+	    xanchor="left",
 	    x=0
 	    ))
 #figBoll.update_layout(title_text="Bollinger Band",title_font_color = '#264653',title_x=0,margin= dict(l=0,r=10,b=10,t=30), height=300)
