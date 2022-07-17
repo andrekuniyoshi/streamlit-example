@@ -201,9 +201,9 @@ def modelo(df, target_):
     X = df.drop(target_, axis=1)
     y = df[target_]
 
-    X_train = X[:-1]
+    X_train = X[:-1].dropna()
     X_test = X[-1:]
-    y_train = y[:-1]
+    y_train = y[:-1].dropna()
 
     xgb = XGBClassifier(random_state=42,max_depth=5)
     xgb.fit(X_train, y_train)
@@ -221,7 +221,6 @@ df = feat_temporais(df)
 
 ##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
 df_viz = df[-600:]
-
 
 st.subheader('Bollinger Band')
 figBoll = go.Figure()
@@ -250,7 +249,7 @@ figBoll.update_layout(legend=dict(
 	    xanchor="left",
 	    x=0
 	    ))
-#figBoll.update_layout(title_text="Bollinger Band",title_font_color = '#264653',title_x=0,margin= dict(l=0,r=10,b=10,t=30), height=300)
+figBoll.update_layout(title_text="Bollinger Band")
 figBoll.update_yaxes(tickprefix="$")
 st.plotly_chart(figBoll, use_container_width=False)
 
@@ -271,7 +270,7 @@ df.dropna(inplace=True)
 df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
 df = constroi_features_defasadas(df,['Adj Close'],20)
 df = constroi_features_futuras(df,'target',hora_previsao)
-df.drop('target', axis=1, inplace=True)
+df_model = df.drop('target', axis=1)
 
 st.dataframe(df)
 
