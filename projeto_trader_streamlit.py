@@ -218,8 +218,9 @@ df = feat_temporais(df)
 
 ##-----------------------------------VISUALIZAÇÃO DOS DADOS-------------------------------------------- '''
 df_viz = df[-600:]
+st.markdown("")
 
-st.subheader('Bollinger Band')
+st.subheader('Visualização das features exógenas')
 figBoll = go.Figure()
 figBoll.add_trace(
 	    go.Scatter(
