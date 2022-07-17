@@ -202,7 +202,11 @@ def modelo(df, target_):
     X_train = df[:-1].dropna().drop(target_, axis=1)
     y_train = df[:-1].dropna()[target_]
 
-    xgb = XGBClassifier(random_state=42,max_depth=5)
+    xgb = XGBClassifier(random_state=42,
+			gamma = 0.1,
+			max_depth = 8,
+			n_estimators = 100,
+			n_jobs=-1)
     xgb.fit(X_train, y_train)
     y_pred = xgb.predict(X_test)
     y_proba = xgb.predict_proba(X_test)
