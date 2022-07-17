@@ -193,7 +193,7 @@ def constroi_features_futuras(df,feature,defasagem):
 
 ###-----------------------------------FUNÇÃO DO MODELO-------------------------------------------- '''
 
-def modelo(df, target, def_fut):
+def modelo(df, target_, def_fut):
     df = criar_rsi(df)
     df = criar_bollinger(df)
     df = suporte_resistencia(df)
@@ -208,8 +208,8 @@ def modelo(df, target, def_fut):
     df = constroi_features_futuras(df,'target',def_fut)
     df.drop('target', axis=1, inplace=True)
 
-    X = df.drop(target, axis=1)
-    y = df[target]
+    X = df.drop(target_, axis=1)
+    y = df[target_]
 
     X_train = X[:-1]
     X_test = X[-1:]
