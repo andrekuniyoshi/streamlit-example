@@ -51,6 +51,11 @@ with col2:
 				  min_value=1,
 				  max_value=8,
 				  step=1)
+
+with col3:
+	m1, m2 = st.columns((1,1))
+	m1.write(y_pred)
+	m2.write(y_proba)
 # -------------------------------------------------------------------------------------------------------------------------------#
 
 stock = yf.Ticker(ticker)
@@ -274,6 +279,4 @@ def modelo(df, target):
 
   return y_pred, y_proba
 
-y_pred, y_proba = modelo(df, 'target_fut_1')
-st.write(y_pred)
-st.write(y_proba)
+y_pred, y_proba = modelo(df[-600:, 'target_fut_1')
