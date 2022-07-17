@@ -193,8 +193,8 @@ def constroi_features_futuras(df,feature,defasagem):
 
 ###-----------------------------------FUNÇÃO DO MODELO-------------------------------------------- '''
 
-def modelo(df, target_, def_fut):
-    df = criar_rsi(df)
+def modelo(df, target_):
+"""    df = criar_rsi(df)
     df = criar_bollinger(df)
     df = suporte_resistencia(df)
     df = lta_ltb(df)
@@ -207,7 +207,7 @@ def modelo(df, target_, def_fut):
     df = constroi_features_defasadas(df,['Adj Close'],20)
     df = constroi_features_futuras(df,'target',def_fut)
     df.drop('target', axis=1, inplace=True)
-
+"""
     X = df.drop(target_, axis=1)
     y = df[target_]
 
@@ -269,12 +269,6 @@ with col_1:
 st.dataframe(df)
 
 ##-----------------------------------CRIANDO DATASET-------------------------------------------- '''
-df = target(df)
-df.dropna(inplace=True)
-df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
-df = constroi_features_defasadas(df,['Adj Close'],20)
-df = constroi_features_futuras(df,'target',1)
-df.drop('target', axis=1, inplace=True)
 
 
 with col2:
@@ -284,6 +278,14 @@ with col2:
 				  max_value=8,
 				  step=1)
 st.write(hora_previsao)
+
+df = target(df)
+df.dropna(inplace=True)
+df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
+df = constroi_features_defasadas(df,['Adj Close'],20)
+df = constroi_features_futuras(df,'target',hora_previsao)
+df.drop('target', axis=1, inplace=True)
+
 ###-----------------------------------MODELO--------------------------------------------
 
 y_pred, y_proba = modelo(df[-600:], 'target_fut', hora_previsao)
