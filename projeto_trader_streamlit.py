@@ -279,7 +279,11 @@ y_pred, y_proba = modelo(df, 'target_fut')
 ###-------------------------------------------------------------------------------------
 
 with col3:
-	st.subheader(y_pred[0])
-	
+	if y_proba >= 0.7:
+		st.info('Subir ⬆️')
+	elif y_proba <= 0.3:
+		st.error('Descer ⬇️')
+	else:
+		st.warning('Na mesma 😐')
 with col4:
 	st.subheader(y_proba[0])
