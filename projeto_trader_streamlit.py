@@ -195,19 +195,6 @@ def constroi_features_futuras(df,feature,defasagem):
 
 def modelo(df, target_):
  
-#    df = criar_rsi(df)
-#    df = criar_bollinger(df)
-#    df = suporte_resistencia(df)
-#    df = lta_ltb(df)
-#    df = media_movel(df, 'Adj Close', 20)
-#    df = feat_temporais(df)
-	
-#    df = target(df)
-#    df.dropna(inplace=True)
-#    df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'corr_class', 'media_movel', 'dia_semana', 'horario', 'mes']]
-#    df = constroi_features_defasadas(df,['Adj Close'],20)
-#    df = constroi_features_futuras(df,'target',def_fut)
-#    df.drop('target', axis=1, inplace=True)
 
     X = df.drop(target_, axis=1)
     y = df[target_]
@@ -267,8 +254,8 @@ with col_1:
 	figBoll.update_yaxes(tickprefix="$")
 	st.plotly_chart(figBoll, use_container_width=True)
 
-##-----------------------------------CRIANDO DATASET-------------------------------------------- '''
 
+##-----------------------------------slider de horas-------------------------------------------- '''
 
 with col2:
 	hora_previsao = st.slider("Tempo Futuro da Previsão (horas)",
@@ -276,7 +263,8 @@ with col2:
 				  min_value=1,
 				  max_value=8,
 				  step=1)
-st.write(hora_previsao)
+
+##-----------------------------------CRIANDO DATASET-------------------------------------------- '''
 
 df = target(df)
 df.dropna(inplace=True)
@@ -294,6 +282,6 @@ y_pred, y_proba = modelo(df, 'target_fut')
 ###-------------------------------------------------------------------------------------
 
 with col3:
-	#m1, m2 = st.columns((1,1))
-	st.write(y_pred)
-	st.write(y_proba)
+	m1, m2 = st.columns((1,1))
+	m1.st.write(y_pred[0])
+	m2.st.write(y_proba[0])
