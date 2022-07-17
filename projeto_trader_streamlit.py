@@ -288,8 +288,8 @@ df = constroi_features_futuras(df,'target',hora_previsao)
 df.drop('target', axis=1, inplace=True)
 
 ###-----------------------------------MODELO--------------------------------------------
-
-y_pred, y_proba = modelo(df[-600:], 'target_fut', hora_previsao)
+df = df[-600:]
+y_pred, y_proba = modelo(df, 'target_fut', hora_previsao)
 
 ###-------------------------------------------------------------------------------------
 
