@@ -267,8 +267,6 @@ with col_1:
 	figBoll.update_yaxes(tickprefix="$")
 	st.plotly_chart(figBoll, use_container_width=True)
 
-st.dataframe(df)
-
 ##-----------------------------------CRIANDO DATASET-------------------------------------------- '''
 
 
@@ -286,6 +284,8 @@ df = df[['target', 'Adj Close', 'Volume', 'rsi', 'bbp', 'suport_resistencia', 'c
 df = constroi_features_defasadas(df,['Adj Close'],20)
 df = constroi_features_futuras(df,'target',hora_previsao)
 df.drop('target', axis=1, inplace=True)
+
+st.dataframe(df)
 
 ###-----------------------------------MODELO--------------------------------------------
 df = df[-600:]
